@@ -86,7 +86,7 @@
 
     @media (max-aspect-ratio: 1/1) {
       #dice-container {
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -124,8 +124,8 @@
       const interval = setInterval(() => {
         dice.forEach(die => {
           let tempRoll = Math.floor(Math.random() * 6) + 1;
-          if(tempRoll==die.textContent) {
-            tempRoll=7-tempRoll;
+          if (tempRoll == die.textContent) {
+            tempRoll = 7 - tempRoll;
           }
           die.textContent = tempRoll;
         });
