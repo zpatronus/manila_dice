@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Dice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #2b2b2b;
+      /* Dark Gray Background */
+      color: #fff;
+    }
+
+    #dice-container {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .die {
+      width: 150px;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+      border: 3px solid #333;
+      border-radius: 15px;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+      color: #fff;
+      transition: all 0.1s ease;
+    }
+
+    .die[data-good="Nutmeg"] {
+      background-color: #8b4513;
+      /* Deep Brown */
+    }
+
+    .die[data-good="Silk"] {
+      background-color: #0e0e9c;
+      /* Dark Blue */
+    }
+
+    .die[data-good="Ginseng"] {
+      background-color: #deb887;
+      /* Light Tan */
+      color: #2b2b2b;
+      /* Dark Gray Text */
+    }
+
+    .die[data-good="Jade"] {
+      background-color: #108a5d;
+      /* Jade Green */
+    }
+
+    #roll-button {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #roll-button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    @media (min-aspect-ratio: 1/1) {
+      #dice-container {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-aspect-ratio: 1/1) {
+      #dice-container {
+        grid-template-rows: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="dice-container">
+    <div class="die" data-good="Ginseng">3</div>
+    <div class="die" data-good="Nutmeg">1</div>
+    <div class="die" data-good="Silk">2</div>
+    <div class="die" data-good="Jade">4</div>
+  </div>
+  <button id="roll-button">Roll</button>
+
+  <audio id="dice-sound" src="/dice.mp3"></audio>
+
+  <script>
+    // Initialize dice with random numbers
+    const dice = document.querySelectorAll('.die');
+    dice.forEach(die => {
+      const initRoll = Math.floor(Math.random() * 6) + 1;
+      die.textContent = initRoll;
+    });
+
+    function rollDice () {
+      const rollButton = document.getElementById('roll-button');
+      const diceSound = document.getElementById('dice-sound');
+
+      // Disable the button for 2 seconds
+      rollButton.disabled = true;
+
+      // Play sound
+      diceSound.play();
+
+      const interval = setInterval(() => {
+        dice.forEach(die => {
+          const tempRoll = Math.floor(Math.random() * 6) + 1;
+          die.textContent = tempRoll;
+        });
+      }, 100);
+
+      setTimeout(() => {
+        clearInterval(interval);
+        dice.forEach(die => {
+          const finalRoll = Math.floor(Math.random() * 6) + 1;
+          die.textContent = finalRoll;
+        });
+        rollButton.disabled = false; // Re-enable the button
+      }, 1500);
+    }
+
+    document.getElementById('roll-button').addEventListener('click', rollDice);
+  </script>
+</body>
+
+</html>
