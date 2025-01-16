@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Responsive Dice</title>
   <style>
     body {
@@ -30,7 +30,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 3rem;
+      font-size: 6rem;
       font-weight: bold;
       border: 3px solid #333;
       border-radius: 15px;
@@ -106,9 +106,14 @@
   <script>
     // Initialize dice with random numbers
     const dice = document.querySelectorAll('.die');
+    const numToFace = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
     dice.forEach(die => {
       const initRoll = Math.floor(Math.random() * 6) + 1;
-      die.textContent = initRoll;
+      // Store the numeric value in a data attribute
+      die.setAttribute('data-value', initRoll);
+      // Display the face instead of the number
+      die.textContent = numToFace[initRoll - 1];
     });
 
     function rollDice () {
@@ -123,11 +128,16 @@
 
       const interval = setInterval(() => {
         dice.forEach(die => {
+          let currentVal = parseInt(die.getAttribute('data-value'));
           let tempRoll = Math.floor(Math.random() * 6) + 1;
-          if (tempRoll == die.textContent) {
+
+          // Avoid repeating the same value
+          if (tempRoll === currentVal) {
             tempRoll = 7 - tempRoll;
           }
-          die.textContent = tempRoll;
+
+          die.setAttribute('data-value', tempRoll);
+          die.textContent = numToFace[tempRoll - 1];
         });
       }, 100);
 
@@ -135,9 +145,11 @@
         clearInterval(interval);
         dice.forEach(die => {
           const finalRoll = Math.floor(Math.random() * 6) + 1;
-          die.textContent = finalRoll;
+          die.setAttribute('data-value', finalRoll);
+          die.textContent = numToFace[finalRoll - 1];
         });
-        rollButton.disabled = false; // Re-enable the button
+        // Re-enable the button
+        rollButton.disabled = false;
       }, 1500);
     }
 
