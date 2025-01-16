@@ -123,7 +123,10 @@
 
       const interval = setInterval(() => {
         dice.forEach(die => {
-          const tempRoll = Math.floor(Math.random() * 6) + 1;
+          let tempRoll = Math.floor(Math.random() * 6) + 1;
+          if(tempRoll==die.textContent) {
+            tempRoll=7-tempRoll;
+          }
           die.textContent = tempRoll;
         });
       }, 100);
